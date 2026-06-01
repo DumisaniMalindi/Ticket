@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Enterprise Dashboard</title>
+
+    <link rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+    *{
+        font-family:'Poppins',sans-serif;
+    }
+
+    body{
+        background:#f1f5f9;
+        padding:30px;
+    }
+
+    .header{
+        margin-bottom:30px;
+    }
+
+    .cards{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:20px;
+        margin-bottom:30px;
+    }
+
+    .card{
+        background:white;
+        padding:20px;
+        border-radius:15px;
+        box-shadow:0 5px 15px rgba(0,0,0,.1);
+    }
+
+    .number{
+        font-size:30px;
+        font-weight:bold;
+    }
+
+    table{
+        width:100%;
+        background:white;
+        border-collapse:collapse;
+        border-radius:15px;
+        overflow:hidden;
+    }
+
+    th{
+        background:#1e293b;
+        color:white;
+        padding:15px;
+    }
+
+    td{
+        padding:15px;
+        border-bottom:1px solid #eee;
+    }
+
+    .high{
+        background:#ef4444;
+        color:white;
+        padding:5px 12px;
+        border-radius:20px;
+    }
+
+    .medium{
+        background:#f59e0b;
+        color:white;
+        padding:5px 12px;
+        border-radius:20px;
+    }
+
+    .low{
+        background:#22c55e;
+        color:white;
+        padding:5px 12px;
+        border-radius:20px;
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1 class="header">
+    Enterprise Service Desk Dashboard
+</h1>
+
+<div class="cards">
+
+    <div class="card">
+        <h4>Total Tickets</h4>
+        <div class="number">
+            {{ total_tickets }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>High Priority</h4>
+        <div class="number">
+            {{ high_count }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>Medium Priority</h4>
+        <div class="number">
+            {{ medium_count }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>Low Priority</h4>
+        <div class="number">
+            {{ low_count }}
+        </div>
+    </div>
+
+</div>
+
+<canvas id="priorityChart"></canvas>
+
+<br><br>
+
+<a href="/" style="
+background:#2563eb;
+color:white;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+">
+Back to Home
+</a>
+
+<br><br>
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Ticket</th>
+<th>Category</th>
+<th>Priority</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for ticket in tickets %}
+
+<tr>
+
+<td>{{ ticket[0] }}</td>
+
+<td>{{ ticket[1] }}</td>
+
+<td>{{ ticket[2] }}</td>
+
+<td>
+
+{% if ticket[3] == "High" %}
+<span class="high">High</span>
+
+{% elif ticket[3] == "Medium" %}
+<span class="medium">Medium</span>
+
+{% else %}
+<span class="low">Low</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+    <script>
+
+    new Chart(
+    document.getElementById('priorityChart'),
+    {
+        type:'doughnut',
+
+        data:{
+            labels:['High','Medium','Low'],
+            datasets:[{
+            data:[
+    {{ high_count }},
+    {{ medium_count }},
+    {{ low_count }}
+    ]
+    }]
+    }
+    }
+    );
+    
+    </script>
+
+</body>
+</html>

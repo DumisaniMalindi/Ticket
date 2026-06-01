@@ -1,0 +1,65 @@
+text,category
+I need annual leave approval,HR
+Requesting sick leave for tomorrow,HR
+Need maternity leave information,HR
+Paternity leave request pending,HR
+Report workplace harassment issue,HR
+harassed,HR 
+Employee misconduct complaint,HR
+Need medical aid assistance,HR
+Update my employee records,HR
+Contract renewal query,HR
+Need HR policy clarification,HR
+Request for remote work approval,HR
+Leave balance not reflecting,HR
+Unable to access payslip,Finance
+Salary payment delayed this month,Finance
+Tax deduction seems incorrect,Finance
+Need invoice approval urgently,Finance
+Vendor payment has not been processed,Finance
+Budget approval request pending,Finance
+Expense claim reimbursement issue,Finance
+Payroll calculation incorrect,Finance
+Need purchase order approval,Finance
+Client payment not received,Finance
+Finance report generation issue,Finance
+Banking details update request,Finance
+Computer not turning on,IT
+Laptop screen is blank,IT
+Internet connection is down,IT
+Cannot connect to company VPN,IT
+Need password reset urgently,IT
+Printer not responding,IT
+Email access problem,IT
+Blue screen error on startup,IT
+Software installation request,IT
+Server is offline,IT
+Shared drive inaccessible,IT
+System login failure,IT
+Keyboard not working properly,IT
+Monitor display issue,IT
+Application keeps crashing,IT
+WiFi connectivity issue,IT
+Production line has stopped,Operations
+Warehouse stock discrepancy detected,Operations
+Delivery truck delayed,Operations
+Supplier complaint about shipment,Operations
+Machine breakdown affecting production,Operations
+Transport scheduling issue,Operations
+Inventory management problem,Operations
+Operations workflow delay,Operations
+Shipment delay affecting customers,Operations
+Factory equipment malfunction,Operations
+Packaging process failure,Operations
+Order fulfillment delay,Operations
+Procurement issue affecting operations,Operations
+Raw materials shortage,Operations
+Dispatch team coordination issue,Operations
+Employee harassment complaint,HR
+Manager harassment issue,HR
+Workplace bullying report,HR
+Toxic workplace environment complaint,HR
+Need to report abuse at work,HR
+Supervisor misconduct complaint,HR
+HR grievance against colleague,HR
+Unsafe workplace behavior report,HR
