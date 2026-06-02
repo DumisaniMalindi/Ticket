@@ -123,3 +123,8 @@ textarea:focus{
     margin-top:20px;
     color:#94a3b8;
 }
+.chart-container{
+    width: 350px;
+    height: 350px;
+    margin: 30px auto;
+}

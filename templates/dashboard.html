@@ -130,7 +130,9 @@
 
 </div>
 
-<canvas id="priorityChart"></canvas>
+<div class="chart-container">
+    <canvas id="priorityChart"></canvas>
+</div>
 
 <br><br>
 
@@ -193,27 +195,33 @@ Back to Home
 
 </table>
 
-    <script>
+<script>
 
-    new Chart(
-    document.getElementById('priorityChart'),
-    {
-        type:'doughnut',
+new Chart(
+document.getElementById('priorityChart'),
+{
+    type:'doughnut',
 
-        data:{
-            labels:['High','Medium','Low'],
-            datasets:[{
+    data:{
+        labels:['High','Medium','Low'],
+
+        datasets:[{
             data:[
-    {{ high_count }},
-    {{ medium_count }},
-    {{ low_count }}
-    ]
-    }]
+                {{ high_count }},
+                {{ medium_count }},
+                {{ low_count }}
+            ]
+        }]
+    },
+
+    options:{
+        responsive:true,
+        maintainAspectRatio:false
     }
-    }
-    );
-    
-    </script>
+}
+);
+
+</script>
 
 </body>
 </html>
