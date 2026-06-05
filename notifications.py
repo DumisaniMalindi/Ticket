@@ -1,12 +1,13 @@
 from http import server
 import smtplib
 from email.mime.text import MIMEText
+import os
 
 def send_admin_email(name, employeeId, department, ticket, category, priority):
 
     sender_email = "ticketdashboard2026@gmail.com"
 
-    sender_password = "kipetkbifijzalfr"
+    sender_password = os.getenv("EMAIL_PASSWORD")
 
     admin_email = "217046843@edu.vut.ac.za"
 
@@ -62,7 +63,7 @@ def send_employee_resolution_email(
 
     sender_email = "ticketdashboard2026@gmail.com"
 
-    sender_password = "kipetkbifijzalfr"
+    sender_password = os.getenv("EMAIL_PASSWORD")
 
     subject = "Enterprise Service Desk - Ticket Resolution Notice"
 
