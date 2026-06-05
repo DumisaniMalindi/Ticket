@@ -5,7 +5,7 @@ import os
 
 def send_admin_email(name, employeeId, department, ticket, category, priority):
 
-    sender_email = "ticketdashboard2026@gmail.com"
+    sender_email = os.getenv("EMAIL_ADDRESS")
 
     sender_password = os.getenv("EMAIL_PASSWORD")
 
@@ -61,7 +61,7 @@ def send_employee_resolution_email(
     ticket_text
 ):
 
-    sender_email = "ticketdashboard2026@gmail.com"
+    sender_email = os.getenv("EMAIL_ADDRESS")
 
     sender_password = os.getenv("EMAIL_PASSWORD")
 
