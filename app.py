@@ -106,13 +106,14 @@ def update_status(ticket_id, status):
         """, (ticket_id,))
 
         employee = cursor.fetchone()
-
-        send_employee_resolution_email(
+        try:
+            send_employee_resolution_email(
                 employee[1],  # employee_email
                 employee[0],  # employee_name
                 employee[2]   # ticket_text
             )
-
+        except Exception as e:
+            print("EMPLOYEE EMAIL FAILED:", e)
     conn.commit()
     conn.close()
 
@@ -238,14 +239,18 @@ def classify_ticket():
     if priority in ["High", "Critical"]:
 
         print("HIGH PRIORITY DETECTED")
-        send_admin_email(
-        name,
-        employeeId,
-        department,
-        original_text,
-        prediction,
-        priority
-        )
+        try:
+            send_admin_email(
+                name,
+                employeeId,
+                department,
+                original_text,
+                prediction,
+                priority
+            )
+        except Exception as e:
+            print("ADMIN EMAIL FAILED:", e)
+    
     return jsonify(result)
 
 
