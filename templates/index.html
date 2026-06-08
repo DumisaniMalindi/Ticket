@@ -156,11 +156,9 @@ async function classifyTicket() {
 
     const response = await fetch("/classify", {
         method: "POST",
-
         headers: {
             "Content-Type": "application/json"
         },
-
         body: JSON.stringify({
             name,
             employeeId,

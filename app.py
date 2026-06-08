@@ -240,17 +240,17 @@ def classify_ticket():
         if priority in ["High", "Critical"]:
 
             print("HIGH PRIORITY DETECTED")
-            try:
-                send_admin_email(
-                    name,
-                    employeeId,
-                    department,
-                    original_text,
-                    prediction,
-                    priority
-                )
-            except Exception as e:
-                print("ADMIN EMAIL FAILED:", e)
+            #try:
+                #send_admin_email(
+                    #name,
+                    #employeeId,
+                    #department,
+                    #original_text,
+                    #prediction,
+                    #priority
+                #)
+            #except Exception as e:
+            #    print("ADMIN EMAIL FAILED:", e)
         
         return jsonify(result)
     
