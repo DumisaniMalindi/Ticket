@@ -130,129 +130,133 @@ def logout():
 @app.route("/classify", methods=["POST"])
 def classify_ticket():
 
-    data = request.json
-    name = data["name"]
-    employeeId = data["employeeId"]
-    department = data["department"]
-    employeeEmail = data["employeeEmail"]
-    original_text = data["text"]
+    try:
+        data = request.json
+        name = data["name"]
+        employeeId = data["employeeId"]
+        department = data["department"]
+        employeeEmail = data["employeeEmail"]
+        original_text = data["text"]
 
-    # Auto-correct spelling
-    corrected_text = str(TextBlob(original_text).correct())
+        # Auto-correct spelling
+        corrected_text = str(TextBlob(original_text).correct())
 
-    # Vectorize input
-    text_vector = vectorizer.transform([corrected_text])
+        # Vectorize input
+        text_vector = vectorizer.transform([corrected_text])
 
-    # Predict category
-    prediction = model.predict(text_vector)[0]
+        # Predict category
+        prediction = model.predict(text_vector)[0]
 
-    # Priority detection
+        # Priority detection
 
-    critical_keywords = [
-    "production has stopped",
-    "server is down",
-    "system outage",
-    "network outage",
-    "cannot work",
-    "business is down"
-    ]
+        critical_keywords = [
+        "production has stopped",
+        "server is down",
+        "system outage",
+        "network outage",
+        "cannot work",
+        "business is down"
+        ]
 
-    high_priority_keywords = [
-    "not working",
-    "computer is not working",
-    "laptop is not working",
-    "internet down",
-    "vpn issue",
-    "printer is not working",
-    "harassment",
-    "harassed",
-    "urgent",
-    "harassment",
-    "emergency",
-    "violence",
-    "abuse",
-    "harssed"
-    ]
+        high_priority_keywords = [
+        "not working",
+        "computer is not working",
+        "laptop is not working",
+        "internet down",
+        "vpn issue",
+        "printer is not working",
+        "harassment",
+        "harassed",
+        "urgent",
+        "harassment",
+        "emergency",
+        "violence",
+        "abuse",
+        "harssed"
+        ]
 
-    medium_priority_keywords = [
-    "slow",
-    "password reset",
-    "salary",
-    "delay",
-    "complaint",
-    "issue"
-    ]
+        medium_priority_keywords = [
+        "slow",
+        "password reset",
+        "salary",
+        "delay",
+        "complaint",
+        "issue"
+        ]
 
-    ticket_lower = original_text.lower()
+        ticket_lower = original_text.lower()
 
-    priority = "Low"
+        priority = "Low"
 
-    # Critical priority
-    for word in critical_keywords:
-        if word in ticket_lower:
-            priority = "Critical"
+        # Critical priority
+        for word in critical_keywords:
+            if word in ticket_lower:
+                priority = "Critical"
 
-    # High priority
-    for word in high_priority_keywords:
-        if word in ticket_lower and priority != "Critical":
-          priority = "High"
+        # High priority
+        for word in high_priority_keywords:
+            if word in ticket_lower and priority != "Critical":
+            priority = "High"
 
-    # Medium priority
-    for word in medium_priority_keywords:
-        if word in ticket_lower and priority not in ["Critical", "High"]:
-            priority = "Medium"
+        # Medium priority
+        for word in medium_priority_keywords:
+            if word in ticket_lower and priority not in ["Critical", "High"]:
+                priority = "Medium"
 
-    ai_response = generate_response(
-        prediction, priority)
+        ai_response = generate_response(
+            prediction, priority)
 
-    # Final result
-    result = {
-        "ticket": original_text,
-        "predicted_category": prediction,
-        "priority": priority,
-        "response": ai_response
-    }
+        # Final result
+        result = {
+            "ticket": original_text,
+            "predicted_category": prediction,
+            "priority": priority,
+            "response": ai_response
+        }
 
+        
+
+        # Save to SQLite database
+        conn = sqlite3.connect("tickets.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        INSERT INTO tickets (
+        employee_name,
+        employee_id,
+        department, 
+        employee_email, 
+        ticket_text, 
+        category, 
+        priority,
+        status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, 
+        (name, employeeId, department, employeeEmail, original_text, prediction, priority, "Open"))
+
+        conn.commit()
+        conn.close()
+        if priority in ["High", "Critical"]:
+
+            print("HIGH PRIORITY DETECTED")
+            try:
+                send_admin_email(
+                    name,
+                    employeeId,
+                    department,
+                    original_text,
+                    prediction,
+                    priority
+                )
+            except Exception as e:
+                print("ADMIN EMAIL FAILED:", e)
+        
+        return jsonify(result)
     
-
-    # Save to SQLite database
-    conn = sqlite3.connect("tickets.db")
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    INSERT INTO tickets (
-    employee_name,
-    employee_id,
-    department, 
-    employee_email, 
-    ticket_text, 
-    category, 
-    priority,
-    status
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, 
-    (name, employeeId, department, employeeEmail, original_text, prediction, priority, "Open"))
-
-    conn.commit()
-    conn.close()
-    if priority in ["High", "Critical"]:
-
-        print("HIGH PRIORITY DETECTED")
-        try:
-            send_admin_email(
-                name,
-                employeeId,
-                department,
-                original_text,
-                prediction,
-                priority
-            )
-        except Exception as e:
-            print("ADMIN EMAIL FAILED:", e)
-    
-    return jsonify(result)
-
+    except Exception as e:
+        print("ERROR:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 
 
