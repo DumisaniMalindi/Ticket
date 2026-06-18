@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, s
 import pickle
 import json
 import os
+import matplotlib
+matplotlib.use('Agg')
+
 import sqlite3
 from textblob import TextBlob
 from responses import generate_response
